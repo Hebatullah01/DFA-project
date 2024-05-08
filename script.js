@@ -11,36 +11,9 @@ var q3 = document.querySelector("#q3");
 var q4 = document.querySelector("#q4");
 var q5 = document.querySelector("#q5");
 var q6 = document.querySelector("#q6");
-var q56 = document.querySelector("#q56");
-var q86 = document.querySelector("#q86");
+var q5border = document.querySelector("#q56");
+var q6border = document.querySelector("#q86");
 
-function colorState(state, color) {
-    switch (state) {
-        case 0:
-            q0.setAttribute('fill', color);
-            break;
-        case 1:
-            q1.setAttribute('fill', color);
-            break;
-        case 2:
-            q2.setAttribute('fill', color);
-            break;
-        case 3:
-            q3.setAttribute('fill', color);
-            break;
-        case 4:
-            q4.setAttribute('fill', color);
-            break;
-        case 5:
-            q5.setAttribute('fill', color);
-            q56.setAttribute('fill', color);
-            break;
-        case 6:
-            q6.setAttribute('fill', color);
-            q86.setAttribute('fill', color);
-            break;
-    }
-}
 
 function transition(input, currentState) {
     //this switch statement simulates the DFA
@@ -64,14 +37,45 @@ function transition(input, currentState) {
             currentState = input == 'w' ? 2 : 5;
             break;
         case 6:
-            currentState = input == 'w' ? 2 : 6;
+            currentState = input == 'w' ? 2 : 4;
             break;
     }
     return currentState;
 }
 
-var lastState = 0;
+//to change the color of the states in the graph
+function colorState(state, color) {
+    switch (state) {
+        case 0:
+            q0.setAttribute('fill', color);
+            break;
+        case 1:
+            q1.setAttribute('fill', color);
+            break;
+        case 2:
+            q2.setAttribute('fill', color);
+            break;
+        case 3:
+            q3.setAttribute('fill', color);
+            break;
+        case 4:
+            q4.setAttribute('fill', color);
+            break;
+        case 5:
+            q5.setAttribute('fill', color);
+            q5border.setAttribute('fill', color);
+            break;
+        case 6:
+            q6.setAttribute('fill', color);
+            q6border.setAttribute('fill', color);
+            break;
+    }
+}
 
+
+
+var lastState = 0;
+// every time the arrow button is clicked, the next character is read to make a transition
 function readChar(characters, index, currentState, prevState, inputString) {
     let box1 = characters[index];
     let box2 = index != 0 ? characters[index - 1] : characters[0];
@@ -87,13 +91,17 @@ function readChar(characters, index, currentState, prevState, inputString) {
     index++;
     var input = box1.textContent;
     prevState = currentState;
+
+    
     currentState = transition(input, currentState);
+
     if (index < inputString.length) {
         colorState(currentState, 'rgb(179, 185, 136)');
     }
     if (currentState != prevState) {
         colorState(prevState, '#d2dbed');
     }
+    //check if the end of the string is reached, then accept or reject
     if (index == inputString.length) {
         colorState(currentState,'rgb(179, 185, 136)');
             if(currentState == 5 || currentState == 6){
@@ -109,6 +117,7 @@ function readChar(characters, index, currentState, prevState, inputString) {
     return [index, currentState, prevState, lastState];
 }
 
+// to create the box that displays the input characters
 function createInputDisplay(inputString) {
     inputDisplay.innerHTML = "";
     for (var i = 0; i < inputString.length; i++) {
@@ -119,7 +128,7 @@ function createInputDisplay(inputString) {
         box.innerHTML = char;
     }
 }
-
+// starting the program and initialising the variables when the run button is clicked
 run.addEventListener('click', function () {
     colorState(lastState, '#d2dbed');
     result.innerHTML = "";
@@ -130,9 +139,10 @@ run.addEventListener('click', function () {
     var characters = document.getElementsByClassName("charBox");
     var index = 0;
     colorState(0, 'rgb(179, 185, 136)');
+    
+    //to read the character when the arrow is clicked
     read.addEventListener('click', function (event) {
         var result = readChar(characters, index, currentState, prevState, inputString);
-        console.log(result);
         index = result[0];
         currentState = result[1];
         prevState = result[2];

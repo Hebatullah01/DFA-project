@@ -1,6 +1,6 @@
 @font-face {
     font-family: font;
-    src: url(golden\ rooster.ttf);
+    src: url(font1.ttf);
 }
 body{
     font-family: font;
@@ -48,6 +48,8 @@ input {
     text-align: center;
     font-weight: 700;
 }
+
+
 p{
     font-size: 5vmax;
     margin-left: 11%;

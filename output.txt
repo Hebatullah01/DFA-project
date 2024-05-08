@@ -1,7 +1,0 @@
-state : 0
-state : 4
-state : 6
-state : 2
-state : 2
-the final current state is : 5
-Accepted
